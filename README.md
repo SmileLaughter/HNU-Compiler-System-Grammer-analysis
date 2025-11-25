@@ -2,6 +2,15 @@
 
 本项目用于 HNU 编译系统课程的语法分析部分，包含从文法解析、FIRST/FOLLOW 集计算、LL/LR 系列分析器、DFA 导出与可视化、以及推导（最左/最右）生成与比较等功能。
 
+## UI 展示
+<img src="assets\image.png" alt="集合计算" width="40%" title="标题">
+
+<img src="assets\image1.png" alt="算法选择" width="100%" title="标题">
+
+<img src="assets\image2.png" alt="LR 分析表" width="100%" title="标题">
+
+
+
 ## 0. 免责声明（重要）
 
 目前本项目只有 LR(1) 算法进行了人工验证，确保了正确性。

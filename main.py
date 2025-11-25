@@ -65,9 +65,9 @@ class ParserManager:
     
     def run(self):
         """运行主程序"""
-        self.console.print("\n[bold cyan]=" * 40)
+        self.console.print(f"\n[bold cyan]{'=' * 40}[/bold cyan]")
         self.console.print("[bold cyan]语法分析器系统[/bold cyan]")
-        self.console.print("[bold cyan]=" * 40 + "\n")
+        self.console.print(f"[bold cyan]{'=' * 40}[/bold cyan]\n")
         
         # 步骤1：加载文法
         if not self.load_grammar():
