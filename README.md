@@ -24,6 +24,11 @@
 
 ## 2. 运行与入口
 
+安装环境:
+```
+pip install -r requirements.txt
+```
+
 在项目根目录（`Chp 3 Grammer analysis`）下运行主程序：
 
 ```powershell
