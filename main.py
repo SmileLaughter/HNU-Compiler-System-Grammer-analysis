@@ -45,7 +45,23 @@ class ParserManager:
     def _configure_dfa_mode(self):
         """配置DFA生成模式"""
         from src.config.dfa_config import dfa_config
+        import config
         
+        # 检查配置文件中的设置
+        mode = config.DETERMINISTIC_MODE_CONFIG
+        
+        if mode == config.ConfigMode.ALWAYS_YES:
+            # 总是启用确定性模式
+            dfa_config.enable_deterministic_mode()
+            self.console.print("[green]✓ 已启用确定性模式 (根据配置文件)[/green]")
+            return
+        elif mode == config.ConfigMode.ALWAYS_NO:
+            # 总是禁用确定性模式
+            dfa_config.disable_deterministic_mode()
+            self.console.print("[yellow]✓ 已启用非确定性模式 (根据配置文件)[/yellow]")
+            return
+            
+        # 否则询问用户
         self.console.print("\n[bold yellow]DFA生成模式配置[/bold yellow]")
         self.console.print("  [1] 确定性模式 - 每次运行生成完全相同的DFA（推荐）")
         self.console.print("  [2] 非确定性模式 - 生成同构但可能不同的DFA（更快）")
@@ -580,8 +596,7 @@ class ParserManager:
         
         # 显示转换结果
         self.formatter.print_separator()
-        parser.show_transform_result(transform_success, transformed_grammar, 
-                                     transformations, self.console)
+        parser.show_transform_result(transform_success, transformed_grammar,transformations, self.console)
         
         # 如果转换成功，更新文法并重新计算集合
         if transform_success:
@@ -609,15 +624,36 @@ class ParserManager:
         self.formatter.print_separator()
         parser.print_table()
         
+        import config
+        
         # 询问是否生成DFA图片
         self.formatter.print_separator()
-        generate_dfa_image = Confirm.ask("\n是否将DFA生成图片并保存？", default=True)
+        
+        gen_image_mode = config.GENERATE_DFA_IMAGE_CONFIG
+        generate_dfa_image = False
+        
+        if gen_image_mode == config.ConfigMode.ALWAYS_YES:
+            generate_dfa_image = True
+            self.console.print("[cyan]正在生成DFA图片 (根据配置文件)...[/cyan]")
+        elif gen_image_mode == config.ConfigMode.ALWAYS_NO:
+            generate_dfa_image = False
+        else:
+            generate_dfa_image = Confirm.ask("\n是否将DFA生成图片并保存？", default=True)
         
         if generate_dfa_image:
             self._save_dfa_image(parser)
         
         # 询问是否导出DFA数据为JSON
-        export_dfa_json = Confirm.ask("\n是否将DFA导出为JSON格式？", default=True)
+        export_json_mode = config.EXPORT_DFA_JSON_CONFIG
+        export_dfa_json = False
+        
+        if export_json_mode == config.ConfigMode.ALWAYS_YES:
+            export_dfa_json = True
+            self.console.print("[cyan]正在导出DFA数据 (根据配置文件)...[/cyan]")
+        elif export_json_mode == config.ConfigMode.ALWAYS_NO:
+            export_dfa_json = False
+        else:
+            export_dfa_json = Confirm.ask("\n是否将DFA导出为JSON格式？", default=True)
         
         if export_dfa_json:
             self._export_dfa_json(parser)
